@@ -1,65 +1,86 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../src/context/AuthContext";
 
-const NavBar1 = () => (
-  <nav
-    style={{
-      background: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
-      boxShadow: "0 2px 8px rgba(25, 118, 210, 0.1)",
-      padding: "0 2rem",
-      position: "sticky",
-      top: 0,
-      zIndex: 100,
-      margin: 0,
-      borderRadius: 0,
-    }}
-  >
-    <div
+const NavBar1 = () => {
+  const { user, logout } = useAuth();
+
+  return (
+    <nav
       style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        height: "64px",
+        background: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
+        boxShadow: "0 2px 8px rgba(25, 118, 210, 0.1)",
+        padding: "0 2rem",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        margin: 0,
+        borderRadius: 0,
       }}
     >
-      <Link
-        to="/"
+      <div
         style={{
-          fontSize: "2rem",
-          fontWeight: "bold",
-          color: "#fff",
-          letterSpacing: "2px",
-          marginRight: "1.5rem",
-          textDecoration: "none",
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: "64px",
         }}
       >
-        <span style={{ color: "#ffd600" }}>●</span> JobBoard
-      </Link>
-      <div>
-        <Link to="/" style={navLinkStyle}>
-          Home
+        <Link
+          to="/"
+          style={{
+            fontSize: "2rem",
+            fontWeight: "bold",
+            color: "#fff",
+            letterSpacing: "2px",
+            marginRight: "1.5rem",
+            textDecoration: "none",
+          }}
+        >
+          <span style={{ color: "#ffd600" }}>●</span> JobBoard
         </Link>
-        <Link to="/jobs" style={navLinkStyle}>
-          Jobs
-        </Link>
-        <Link to="/add-job" style={navLinkStyle}>
-          Add Job
-        </Link>
-        <Link to="/companies" style={navLinkStyle}>
-          Companies
-        </Link>
-        <Link to="/about" style={navLinkStyle}>
-          About
-        </Link>
-        <Link to="/applications" style={navLinkStyle}>
-          Applications
-        </Link>
+        <div>
+          <Link to="/" style={navLinkStyle}>
+            Home
+          </Link>
+          <Link to="/jobs" style={navLinkStyle}>
+            Jobs
+          </Link>
+          <Link to="/add-job" style={navLinkStyle}>
+            Add Job
+          </Link>
+          <Link to="/companies" style={navLinkStyle}>
+            Companies
+          </Link>
+          <Link to="/applications" style={navLinkStyle}>
+            Applications
+          </Link>
+          {user ? (
+            <>
+              <Link to="/profile" style={navLinkStyle}>
+                Profile
+              </Link>
+              <button onClick={logout} style={navLinkStyle}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/register" style={navLinkStyle}>
+                Register
+              </Link>
+              <Link to="/login" style={navLinkStyle}>
+                Login
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  </nav>
-);
+    </nav>
+  );
+};
 
 const navLinkStyle = {
   color: "#fff",

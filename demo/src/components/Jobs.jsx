@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import { useJobs } from "../context/JobContext";
+import { useLocation } from "react-router-dom";
 
 const Jobs = () => {
-  const { jobs, applications, applyToJob } = useJobs();
-  const [showApply, setShowApply] = useState(null); // job id or null
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const { jobs } = useJobs();
+  const location = useLocation();
 
-  const handleApply = (jobId) => {
-    setShowApply(jobId);
-    setForm({ name: "", email: "", message: "" });
-  };
+  // Get search params from URL
+  const params = new URLSearchParams(location.search);
+  const search = params.get("search") || "";
+  const locationFilter = params.get("location") || "";
+  const experience = params.get("experience") || "";
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    applyToJob(job.id, form);
-    setShowApply(null);
-  };
-
-  const hasApplied = (jobId) =>
-    applications.some((app) => app.jobId === jobId);
+  // Filter jobs
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch =
+      search === "" ||
+      job.title.toLowerCase().includes(search.toLowerCase()) ||
+      job.company.toLowerCase().includes(search.toLowerCase());
+    const matchesLocation =
+      locationFilter === "" ||
+      job.location.toLowerCase().includes(locationFilter.toLowerCase());
+    const matchesExperience =
+      experience === "" ||
+      (job.experience && job.experience.toLowerCase() === experience.toLowerCase());
+    return matchesSearch && matchesLocation && matchesExperience;
+  });
 
   return (
     <section
@@ -42,10 +47,12 @@ const Jobs = () => {
         >
           Available Jobs
         </h2>
-        {jobs.length === 0 ? (
-          <div style={{ color: "#fff", textAlign: "center" }}>No jobs posted yet.</div>
+        {filteredJobs.length === 0 ? (
+          <div style={{ color: "#888", textAlign: "center", marginTop: "2rem", fontSize: "1.2rem" }}>
+            No results found.
+          </div>
         ) : (
-          jobs.map((job) => (
+          filteredJobs.map((job) => (
             <div
               key={job.id}
               style={{
@@ -80,123 +87,6 @@ const Jobs = () => {
                 </span>
               </div>
               <div style={{ color: "#333", fontSize: "1.05rem", marginBottom: "1rem" }}>{job.description}</div>
-              {hasApplied(job.id) ? (
-                <span
-                  style={{
-                    background: "#ffd600",
-                    color: "#1976d2",
-                    fontWeight: 700,
-                    borderRadius: "8px",
-                    padding: "0.5rem 1.2rem",
-                    marginBottom: "0.5rem",
-                    display: "inline-block",
-                  }}
-                >
-                  Applied
-                </span>
-              ) : (
-                <button
-                  style={{
-                    background: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
-                    color: "#fff",
-                    fontWeight: 700,
-                    border: "none",
-                    borderRadius: "8px",
-                    padding: "0.7rem 2rem",
-                    fontSize: "1rem",
-                    cursor: "pointer",
-                    boxShadow: "0 2px 8px rgba(25, 118, 210, 0.10)",
-                    transition: "background 0.2s",
-                    marginBottom: "0.5rem",
-                  }}
-                  onClick={() => handleApply(job.id)}
-                >
-                  Apply
-                </button>
-              )}
-              {showApply === job.id && (
-                <form
-                  onSubmit={handleSubmit}
-                  style={{
-                    background: "#f5faff",
-                    borderRadius: "12px",
-                    padding: "1.5rem",
-                    marginTop: "1rem",
-                    boxShadow: "0 2px 8px rgba(25, 118, 210, 0.10)",
-                  }}
-                >
-                  <h4 style={{ color: "#1976d2", marginBottom: "1rem" }}>Apply for {job.title}</h4>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Name"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "0.7rem",
-                      marginBottom: "0.8rem",
-                      borderRadius: "8px",
-                      border: "1px solid #bbdefb",
-                      fontSize: "1rem",
-                      outline: "none",
-                    }}
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your Email"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "0.7rem",
-                      marginBottom: "0.8rem",
-                      borderRadius: "8px",
-                      border: "1px solid #bbdefb",
-                      fontSize: "1rem",
-                      outline: "none",
-                    }}
-                  />
-                  <textarea
-                    name="message"
-                    placeholder="Why are you a good fit?"
-                    value={form.message}
-                    onChange={handleChange}
-                    required
-                    rows={3}
-                    style={{
-                      width: "100%",
-                      padding: "0.7rem",
-                      marginBottom: "0.8rem",
-                      borderRadius: "8px",
-                      border: "1px solid #bbdefb",
-                      fontSize: "1rem",
-                      outline: "none",
-                      resize: "vertical",
-                    }}
-                  />
-                  <button
-                    type="submit"
-                    style={{
-                      background: "#ffd600",
-                      color: "#1976d2",
-                      fontWeight: 700,
-                      border: "none",
-                      borderRadius: "8px",
-                      padding: "0.7rem 2rem",
-                      fontSize: "1rem",
-                      cursor: "pointer",
-                      boxShadow: "0 2px 8px rgba(25, 118, 210, 0.10)",
-                      transition: "background 0.2s",
-                    }}
-                  >
-                    Submit Application
-                  </button>
-                </form>
-              )}
             </div>
           ))
         )}

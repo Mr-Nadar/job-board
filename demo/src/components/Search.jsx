@@ -8,18 +8,24 @@ const Search = () => {
   const [query, setQuery] = useState(location.state?.query || "");
 
   useEffect(() => {
-    if (location.state?.query) {
+    if (location.state?.query !== undefined) {
       setQuery(location.state.query);
     }
   }, [location.state]);
 
-  const filteredJobs = jobs.filter(
-    (job) =>
-      job.title.toLowerCase().includes(query.toLowerCase()) ||
-      job.company.toLowerCase().includes(query.toLowerCase()) ||
-      job.location.toLowerCase().includes(query.toLowerCase()) ||
-      job.type.toLowerCase().includes(query.toLowerCase())
-  );
+  // --- UPDATE THIS PART ---
+  // Show all jobs if query is empty, otherwise filter
+  const filteredJobs =
+    query.trim() === ""
+      ? jobs
+      : jobs.filter(
+          (job) =>
+            job.title.toLowerCase().includes(query.toLowerCase()) ||
+            job.company.toLowerCase().includes(query.toLowerCase()) ||
+            job.location.toLowerCase().includes(query.toLowerCase()) ||
+            job.type.toLowerCase().includes(query.toLowerCase())
+        );
+  // --- END UPDATE ---
 
   return (
     <section
@@ -30,7 +36,15 @@ const Search = () => {
       }}
     >
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-        <h2 style={{ color: "#fff", fontWeight: 700, fontSize: "2.2rem", marginBottom: "2rem", textAlign: "center" }}>
+        <h2
+          style={{
+            color: "#fff",
+            fontWeight: 700,
+            fontSize: "2.2rem",
+            marginBottom: "2rem",
+            textAlign: "center",
+          }}
+        >
           Search Jobs
         </h2>
         <input

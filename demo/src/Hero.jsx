@@ -7,17 +7,20 @@ const Hero = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Redirect to /search with query as state
     navigate("/search", { state: { query } });
   };
 
   return (
     <section
       style={{
-        background: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
-        color: "#fff",
+        minHeight: "70vh",
+        background: `#fff url("./img.jpg") no-repeat center center/cover`,
+        color: "#1976d2",
         padding: "4rem 0 3rem 0",
         textAlign: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         borderRadius: 0,
         boxShadow: "0 8px 32px rgba(25, 118, 210, 0.10)",
         position: "relative",
@@ -30,6 +33,9 @@ const Hero = () => {
           margin: "0 auto",
           position: "relative",
           zIndex: 2,
+          background: "rgba(255,255,255,0.85)",
+          borderRadius: "16px",
+          padding: "2rem",
         }}
       >
         <h1
@@ -39,9 +45,10 @@ const Hero = () => {
             marginBottom: "1.2rem",
             letterSpacing: "-1px",
             lineHeight: 1.1,
+            color: "#1976d2",
           }}
         >
-          Find Your <span style={{ color: "#ffd600" }}>Dream Job</span> <br />
+          Find Your Dream Job <br />
           in Tech, Design & More
         </h1>
         <p
@@ -49,7 +56,7 @@ const Hero = () => {
             fontSize: "1.3rem",
             fontWeight: 400,
             marginBottom: "2.5rem",
-            color: "#e3f2fd",
+            color: "#1976d2",
           }}
         >
           Discover thousands of opportunities from top companies. <br />
@@ -69,11 +76,11 @@ const Hero = () => {
             type="text"
             placeholder="Search jobs, companies, skills..."
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={(e) => setQuery(e.target.value)}
             style={{
               padding: "0.9rem 1.2rem",
               borderRadius: "8px",
-              border: "none",
+              border: "1px solid #1976d2",
               fontSize: "1.1rem",
               width: "320px",
               maxWidth: "70vw",
@@ -95,41 +102,19 @@ const Hero = () => {
               boxShadow: "0 2px 8px rgba(25, 118, 210, 0.10)",
               transition: "background 0.2s",
             }}
-            onMouseOver={e => (e.target.style.background = "#fff176")}
-            onMouseOut={e => (e.target.style.background = "#ffd600")}
+            onMouseOver={(e) => (e.target.style.background = "#fff176")}
+            onMouseOut={(e) => (e.target.style.background = "#ffd600")}
           >
             Search
           </button>
         </form>
-        <div style={{ fontSize: "1rem", color: "#bbdefb" }}>
-          <span role="img" aria-label="rocket">🚀</span> 1,200+ jobs posted this week!
+        <div style={{ fontSize: "1rem", color: "#1976d2" }}>
+          <span role="img" aria-label="star">
+            ⭐
+          </span>{" "}
+          Join our talent community to get matched with top companies! 
         </div>
       </div>
-      {/* Decorative circles */}
-      <div
-        style={{
-          position: "absolute",
-          top: "-60px",
-          left: "-60px",
-          width: "180px",
-          height: "180px",
-          background: "rgba(255, 214, 0, 0.15)",
-          borderRadius: "50%",
-          zIndex: 1,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "-80px",
-          right: "-80px",
-          width: "220px",
-          height: "220px",
-          background: "rgba(255, 255, 255, 0.08)",
-          borderRadius: "50%",
-          zIndex: 1,
-        }}
-      />
     </section>
   );
 };
