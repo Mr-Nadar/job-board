@@ -112,7 +112,7 @@ const Hero = () => {
           <span role="img" aria-label="star">
             ⭐
           </span>{" "}
-          Join our talent community to get matched with top companies!
+          Join our talent community to get matched with top companies! 
         </div>
       </div>
     </section>
